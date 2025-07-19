@@ -9,7 +9,7 @@ import { userDataContext } from "../context/UserContext.jsx";
 
 function SignUp() {
     const [showPassword,setShowPassword] = useState(false)
-    const {serverUrl} = useContext(userDataContext)
+    const {serverUrl,userData,setUserData} = useContext(userDataContext)
     const navigate = useNavigate()
     const [name,setName] = useState("")
     const [email,setEmail] = useState("")
@@ -28,8 +28,9 @@ const handleSignUp = async (e) => {
             email,
             password
         }, { withCredentials: true });
-        console.log(result);
+        setUserData(result);
         setLoading(false);
+        navigate("/customize"); // redirect to customize page after signup
     } catch (error) {
         console.log(error);
         setLoading(false);

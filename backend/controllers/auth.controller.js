@@ -23,7 +23,7 @@ export const signup = async (req, res) => {
             password: hashedPassword
         });
 
-        const token = genToken(user._id);
+        const token = await genToken(user._id);
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -53,7 +53,7 @@ export const Login = async (req, res) => {
             return res.status(400).json({ message: "Incorrect password" });
         }
 
-        const token = genToken(user._id);
+        const token = await genToken(user._id);
 
         res.cookie("token", token, {
             httpOnly: true,

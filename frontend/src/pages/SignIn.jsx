@@ -8,7 +8,7 @@ import { userDataContext } from "../context/UserContext.jsx";
 
 function SignIn() {
     const [showPassword,setShowPassword] = useState(false)
-    const {serverUrl} = useContext(userDataContext)
+    const {serverUrl,userData, setUserData} = useContext(userDataContext)
     const navigate = useNavigate()
     const [loading,setLoading] = useState(false)
     const [email,setEmail] = useState("")
@@ -16,7 +16,6 @@ function SignIn() {
     const [err,setErr] = useState("")
 
 
-// ...existing code...
 const handleSignIn = async (e) => {
     e.preventDefault();
     setErr("");
@@ -28,15 +27,15 @@ const handleSignIn = async (e) => {
             email,
             password
         }, { withCredentials: true });
-        console.log(result);
+        setUserData(result.data); // update context with user data after login
         setLoading(false);
+        navigate("/"); // redirect to home after login
     } catch (error) {
         console.log(error);
         setLoading(false);
         setErr(error?.response?.data?.message || "Server is not responding.");
     }
 };
-// ...existing code...
 
     return (
         <div  className="w-full h-[100vh] bg-cover flex justify-center items-center"
