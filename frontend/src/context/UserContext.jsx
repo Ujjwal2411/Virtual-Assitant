@@ -31,6 +31,20 @@ function UserContext ({children}) {
         }
     }
 
+    const getGeminiResponse = async (command)=>{
+        try {
+            // Use correct endpoint and send transcript as expected
+            const result = await axios.post(
+                `${serverUrl}/api/user/asktoassistant`,
+                command, // command should be { transcript }
+                { withCredentials: true }
+            );
+            return result.data;
+        } catch (error) {
+            console.log("Error in getting Gemini response:", error);
+        }
+    }
+
     useEffect(() => {
         handleCurrentUser()
     }, []);
@@ -39,7 +53,8 @@ function UserContext ({children}) {
          serverUrl,
         userData,
         setUserData,frontendImage,
-        setFrontendImage,backendImage,setBackendImage,selectedImage,setSelectedImage
+        setFrontendImage,backendImage,setBackendImage,selectedImage,
+        setSelectedImage,getGeminiResponse
     }
     return (
          <userDataContext.Provider value={value}>

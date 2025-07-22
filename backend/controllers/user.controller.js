@@ -1,5 +1,7 @@
 import User from '../models/user.model.js';
 import uploadOnCloudinary from '../config/cloudinary.js';
+import geminiResponse from '../gemini.js';
+import moment from "moment"
 export const getCurrentUser = async (req, res) => {
     try {
         const userId = req.userId; 
@@ -46,5 +48,75 @@ export const updateAssistant = async (req, res) => {
     } catch (error) {
         console.error("General error in updateAssistant:", error);
         return res.status(500).json({ message: "Error updating assistant", error: error.message });
+    }
+}
+
+
+export const askToAssistant = async (req, res) => {
+    try {
+        const {transcript} = req.body;
+        const user = await User.findById(req.userId);
+        const userName = user.name
+        const assistantName = user.assistantName 
+        const result = await geminiResponse(transcript,assistantName,userName)
+
+        const jsonMatch = result.match(/{[\s\S]*}/)
+        if (!jsonMatch) {
+            return res.status(400).json({ message: "Invalid response format from Gemini" });
+        }
+
+        const gemResult = JSON.parse(jsonMatch[0])
+        const type = gemResult.type;
+
+        switch (type) {
+            case "get-date" :
+                return res.json({
+                    type,
+                    userInput: gemResult.userInput,
+                    response: ` current date is ${moment().format('YYYY-MM-DD')}`
+                })
+            case "get-time":
+                return res.json({
+                    type,
+                    userInput: gemResult.userInput,
+                    response: ` current time is ${moment().format('hh:mm A')}`
+                });
+
+            case "get-day":
+                return res.json({
+                    type,
+                    userInput: gemResult.userInput,
+                    response: `Today is ${moment().format('dddd')}`
+                });
+
+            case "get-month":
+                return res.json({
+                    type,
+                    userInput: gemResult.userInput,
+                    response: `Current month is ${moment().format('MMMM')}`
+                });
+            
+            case 'google-search':
+            case 'youtube-search':
+            case 'youtube-play':
+            case 'calculator-open':
+            case 'instagram-open':
+            case 'general':
+            case 'facebook-open':
+            case 'weather-show':
+                return res.json({
+                    type,
+                    userInput: gemResult.userInput,
+                    response: gemResult.response,
+                });
+
+            default:
+                return res.status(400).json({ message: "I did not Understand this command" });
+        }
+                
+            
+
+    } catch (error) {
+        return res.status(500).json({ message: "ask assitant error", error: error.message });
     }
 }
