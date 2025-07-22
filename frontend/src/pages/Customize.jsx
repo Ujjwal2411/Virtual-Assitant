@@ -10,7 +10,7 @@ import image7 from "../assets/image7.jpg"
 import { LuImagePlus } from "react-icons/lu";
 import { userDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { IoChevronBack } from "react-icons/io5";
 
 function Customize() {
     const {serverUrl,
@@ -28,7 +28,8 @@ function Customize() {
     }
     return (
         <div className="w-full h-[100vh] bg-gradient-to-t from-[black] 
-        to-[#030353] flex justify-center items-center flex-col p-[30px]">
+        to-[#030353] flex justify-center items-center flex-col p-[30px] ">
+             <IoChevronBack className="absolute top-[30px] left-[30px] w-[25px] h-[25px] cursor-pointer text-white" onClick={() => navigate("/")} />
             <h1 className="text-white text-[30px] mb-[20px] text-center">Select Your <span className="text-blue-400">Assistant</span></h1>
             <div className="w-full max-w-[800px] flex justify-center items-center flex-wrap gap-[12px] mb-[20px]">
                 <Card image={image1}/>
