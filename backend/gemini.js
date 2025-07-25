@@ -26,7 +26,7 @@ const geminiResponse = async (command,assistantName,userName) => {
            "Sure, playing it now", "Here's what I found", "Today is Tuesday", etc.
            
         Type meanings:
-           -"general": if it's a factual or informational question.
+           -"general": if it's a factual or informational question agar koi essa question puchta hai jiska answer tumhe pata hai usko bhi general ki category mein rakho bas short mein answer do.
            -"google-search": if user wants to search something on Google.
            -"youtube-search": if user wants to search something on YouTube.
            -"youtube-play": if user wants to directly play a video or song.

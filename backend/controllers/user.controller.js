@@ -56,6 +56,8 @@ export const askToAssistant = async (req, res) => {
     try {
         const {transcript} = req.body;
         const user = await User.findById(req.userId);
+        user.history.push(transcript);
+        user.save();
         const userName = user.name
         const assistantName = user.assistantName 
         const result = await geminiResponse(transcript,assistantName,userName)
