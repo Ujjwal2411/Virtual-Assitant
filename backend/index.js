@@ -12,7 +12,7 @@ import geminiResponse from './gemini.js'
 
 const app = express()
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:8000"],
+    origin: ["https://assistant-vdqz.onrender.com"],
     credentials: true
 }));
 app.use(express.json())
